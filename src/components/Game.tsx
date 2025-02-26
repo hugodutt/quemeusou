@@ -394,20 +394,4 @@ export function Game() {
   );
 }
 
-Game.displayName = 'Game';
-
-const handleGoogleLogin = async () => {
-  try {
-    const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
-    
-    // Criar/atualizar documento do usuário
-    await setDoc(doc(db, 'users', result.user.uid), {
-      // ... existing code ...
-    }, { merge: true });
-
-    // ... existing code ...
-  } catch (error) {
-    // ... existing code ...
-  }
-}; 
+Game.displayName = 'Game'; 

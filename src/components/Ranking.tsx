@@ -117,7 +117,7 @@ export const Ranking = memo(() => {
     };
 
     fetchRankings();
-  }, [period, user, db, COLLECTIONS.SCORES]);
+  }, [period, user]);
 
   if (error) {
     return (
