@@ -132,6 +132,7 @@ export function Auth() {
           gamesWon: 0,
           currentStreak: 0,
           bestStreak: 0,
+          correctGuesses: 0,
           createdAt: new Date(),
         });
 
@@ -146,6 +147,7 @@ export function Auth() {
           gamesWon: 0,
           currentStreak: 0,
           bestStreak: 0,
+          correctGuesses: 0,
         };
 
         setUser(userData);

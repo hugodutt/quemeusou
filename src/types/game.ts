@@ -26,6 +26,7 @@ export interface User {
   gamesWon: number;
   currentStreak: number;
   bestStreak: number;
+  correctGuesses: number;
 }
 
 export interface Achievement {
