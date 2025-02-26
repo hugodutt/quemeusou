@@ -64,6 +64,7 @@ export function Auth() {
         gamesWon: 0,
         currentStreak: 0,
         bestStreak: 0,
+        correctGuesses: 0,
         photoURL: result.user.photoURL,
         createdAt: new Date(),
       }, { merge: true });
@@ -79,6 +80,7 @@ export function Auth() {
         gamesWon: 0,
         currentStreak: 0,
         bestStreak: 0,
+        correctGuesses: 0,
       };
 
       setUser(userData);
@@ -183,6 +185,7 @@ export function Auth() {
           gamesWon: 0,
           currentStreak: 0,
           bestStreak: 0,
+          correctGuesses: 0,
         };
 
         setUser(userData);

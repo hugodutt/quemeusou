@@ -232,7 +232,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
             gamesWon: 0,
             currentStreak: 0,
             bestStreak: 0,
-            achievements: []
+            achievements: [],
+            correctGuesses: 0
           };
           await setDoc(userRef, newUser);
 
