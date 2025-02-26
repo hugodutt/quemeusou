@@ -11,8 +11,7 @@ import {
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword,
   GoogleAuthProvider,
-  signInWithPopup,
-  AuthError
+  signInWithPopup
 } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { useAnalytics } from '@/hooks/useAnalytics';

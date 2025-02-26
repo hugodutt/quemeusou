@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback, memo, useMemo } from 'react';
 import { useGame } from '@/contexts/GameContext';
-import { toast } from 'react-hot-toast';
 import { FiSend, FiClock, FiHelpCircle, FiTarget, FiAward } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import { getTimeUntilNextGame } from '@/utils/game';
@@ -99,7 +98,7 @@ const GuessInput = memo(({
 }: {
   value: string;
   onChange: (value: string) => void;
-  onSubmit: () => void;
+  onSubmit: (e: React.FormEvent) => void;
   disabled: boolean;
   isSubmitting: boolean;
 }) => (
