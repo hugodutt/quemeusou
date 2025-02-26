@@ -77,7 +77,7 @@ export const PlayerProfile = memo(() => {
     const level = calculateLevel(user.xp);
     const nextLevelXP = calculateXPForNextLevel(level + 1);
     return { level, nextLevelXP };
-  }, [user?.xp]);
+  }, [user]);
 
   if (!user) return null;
 

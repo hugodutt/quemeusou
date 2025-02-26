@@ -2,18 +2,21 @@
 
 import { useState, FormEvent } from 'react';
 import { useGame } from '@/contexts/GameContext';
-import { FiUser, FiArrowRight, FiAward, FiStar, FiTarget, FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
+import { FiUser, FiArrowRight, FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import { auth, db } from '@/lib/firebase';
+import { FirebaseError } from 'firebase/app';
 import { 
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
+  AuthError
 } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { useAnalytics } from '@/hooks/useAnalytics';
+import Image from 'next/image';
 
 const container = {
   hidden: { opacity: 0 },
@@ -88,9 +91,10 @@ export function Auth() {
       });
 
       toast.success('Login realizado com sucesso!');
-    } catch (error: any) {
+    } catch (error) {
+      const authError = error as FirebaseError;
       toast.error('Erro ao fazer login com Google');
-      console.error(error);
+      console.error(authError);
     }
   };
 
@@ -190,22 +194,24 @@ export function Auth() {
 
         toast.success('Login realizado com sucesso!');
       }
-    } catch (error: any) {
-      const errorMessage = error.code === 'auth/email-already-in-use'
+    } catch (error: unknown) {
+      const firebaseError = error as FirebaseError;
+      const errorMessage = firebaseError.code === 'auth/email-already-in-use'
         ? 'Este e-mail já está em uso'
-        : error.code === 'auth/invalid-email'
+        : firebaseError.code === 'auth/invalid-email'
         ? 'E-mail inválido'
-        : error.code === 'auth/weak-password'
+        : firebaseError.code === 'auth/weak-password'
         ? 'A senha deve ter pelo menos 6 caracteres'
-        : error.code === 'auth/wrong-password'
+        : firebaseError.code === 'auth/wrong-password'
         ? 'Senha incorreta'
-        : error.code === 'auth/user-not-found'
+        : firebaseError.code === 'auth/user-not-found'
+        : (error as FirebaseError).code === 'auth/user-not-found'
         ? 'Usuário não encontrado'
         : 'Erro ao realizar operação';
       
       // Track error event
       await trackEvent('auth_error', {
-        error_code: error.code,
+        error_code: (error as FirebaseError).code,
         error_message: errorMessage
       });
       
@@ -286,7 +292,7 @@ export function Auth() {
             whileTap={{ scale: 0.98 }}
             className="w-full py-4 px-6 mb-4 rounded-xl text-white font-medium relative overflow-hidden flex items-center justify-center gap-3 bg-gray-800 hover:bg-gray-700 transition-colors"
           >
-            <img src="/google.svg" alt="Google" className="w-5 h-5" />
+            <Image src="/google.svg" alt="Google" width={20} height={20} />
             Continuar com Google
           </motion.button>
 

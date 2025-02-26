@@ -3,9 +3,9 @@
 import { useState, useEffect, useCallback, memo, useMemo } from 'react';
 import { useGame } from '@/contexts/GameContext';
 import { toast } from 'react-hot-toast';
-import { FiSend, FiClock, FiHelpCircle, FiTarget, FiAward, FiAlertCircle } from 'react-icons/fi';
-import { motion, AnimatePresence } from 'framer-motion';
-import { formatTimeRemaining, getTimeUntilNextGame } from '@/utils/game';
+import { FiSend, FiClock, FiHelpCircle, FiTarget, FiAward } from 'react-icons/fi';
+import { motion } from 'framer-motion';
+import { getTimeUntilNextGame } from '@/utils/game';
 
 // Tipos
 type GameStatusType = 'won' | 'lost' | 'playing' | 'surrendered';
@@ -263,7 +263,7 @@ const HintsDisplay = memo(({ hints, revealedCount, onRevealHint, canRevealMore }
 ));
 HintsDisplay.displayName = 'HintsDisplay';
 
-export const Game = memo(() => {
+export function Game() {
   const { gameState, user, makeGuess, revealHint } = useGame();
   const [guess, setGuess] = useState('');
   const [nextGameTime, setNextGameTime] = useState<number | null>(null);
@@ -279,20 +279,18 @@ export const Game = memo(() => {
   }, [gameState?.hintsRevealed]);
 
   // Memoriza o handler de submit
-  const handleSubmit = useCallback(async () => {
-    if (!guess.trim() || !gameState) {
-      toast.error('Digite um palpite!');
-      return;
-    }
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!guess.trim() || isSubmitting) return;
 
     setIsSubmitting(true);
     try {
-      const result = await makeGuess(guess.trim());
+      await makeGuess(guess);
       setGuess('');
     } finally {
       setIsSubmitting(false);
     }
-  }, [guess, makeGuess, gameState]);
+  }, [guess, isSubmitting, makeGuess]);
 
   // Atualiza o timer do próximo jogo
   useEffect(() => {
@@ -376,7 +374,7 @@ export const Game = memo(() => {
 
         <PotentialPoints points={potentialPoints} />
 
-        <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+        <form onSubmit={handleSubmit}>
           <GuessInput
             value={guess}
             onChange={setGuess}
@@ -394,6 +392,22 @@ export const Game = memo(() => {
       </div>
     </div>
   );
-});
+}
 
-Game.displayName = 'Game'; 
+Game.displayName = 'Game';
+
+const handleGoogleLogin = async () => {
+  try {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+    
+    // Criar/atualizar documento do usuário
+    await setDoc(doc(db, 'users', result.user.uid), {
+      // ... existing code ...
+    }, { merge: true });
+
+    // ... existing code ...
+  } catch (error) {
+    // ... existing code ...
+  }
+}; 

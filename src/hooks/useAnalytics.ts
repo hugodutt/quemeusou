@@ -2,11 +2,12 @@ import { useCallback } from 'react';
 import { analytics } from '@/lib/firebase';
 import { logEvent, Analytics } from 'firebase/analytics';
 
+interface EventParams {
+  [key: string]: string | number | boolean;
+}
+
 export function useAnalytics() {
-  const trackEvent = useCallback(async (
-    eventName: string,
-    eventParams?: { [key: string]: any }
-  ) => {
+  const trackEvent = useCallback(async (eventName: string, params: EventParams) => {
     try {
       // Adiciona um timeout para não bloquear indefinidamente
       const analyticsPromise = Promise.race([
@@ -18,7 +19,7 @@ export function useAnalytics() {
 
       const analyticsInstance = await analyticsPromise;
       if (analyticsInstance) {
-        logEvent(analyticsInstance as Analytics, eventName, eventParams);
+        logEvent(analyticsInstance as Analytics, eventName, params);
       }
     } catch (error) {
       // Apenas loga o erro sem afetar a experiência do usuário

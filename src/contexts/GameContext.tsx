@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback, useMemo } from 'react';
 import { getRandomPersonality } from '@/data/personalities';
-import { GameState, Personality, User, GuessResult } from '@/types/game';
+import { GameState, User, GuessResult } from '@/types/game';
 import { toast } from 'react-hot-toast';
 import { auth, db } from '@/lib/firebase';
 import { onAuthStateChanged } from 'firebase/auth';

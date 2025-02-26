@@ -1,13 +1,12 @@
 'use client';
 
-import { Auth } from '@/components/Auth';
 import { Game } from '@/components/Game';
 import { Header } from '@/components/Header';
 import { Achievements } from '@/components/Achievements';
 import { useGame } from '@/contexts/GameContext';
 import { Ranking } from '@/components/Ranking';
 import { FiAward, FiStar, FiHelpCircle } from 'react-icons/fi';
-import { useEffect, useState, memo, useMemo } from 'react';
+import { useEffect, useState, memo } from 'react';
 import dynamic from 'next/dynamic';
 
 // Componentes memorizados para evitar re-renders desnecessários
@@ -65,15 +64,6 @@ export default function Home() {
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // Memoriza os stats do usuário para evitar re-renders
-  const userStats = useMemo(() => {
-    if (!user) return null;
-    return {
-      score: user.score,
-      xp: user.xp
-    };
-  }, [user?.score, user?.xp]);
 
   if (!mounted) {
     return null;

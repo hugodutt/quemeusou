@@ -22,13 +22,7 @@ const COLLECTIONS = {
   SCORES: 'scores'
 } as const;
 
-const PeriodSelector = memo(({ 
-  period, 
-  setPeriod 
-}: { 
-  period: Period;
-  setPeriod: (p: Period) => void;
-}) => {
+const PeriodSelector = memo(({ period, setPeriod }: { period: Period; setPeriod: (p: Period) => void }) => {
   const periods = {
     daily: 'Hoje',
     weekly: 'Semana',
@@ -54,7 +48,9 @@ const PeriodSelector = memo(({
   );
 });
 
-export const Ranking = () => {
+PeriodSelector.displayName = 'PeriodSelector';
+
+export const Ranking = memo(() => {
   const { user } = useGame();
   const [period, setPeriod] = useState<Period>('daily');
   const [rankings, setRankings] = useState<Player[]>([]);
@@ -121,7 +117,7 @@ export const Ranking = () => {
     };
 
     fetchRankings();
-  }, [period, user?.id]);
+  }, [period, user, db, COLLECTIONS.SCORES]);
 
   if (error) {
     return (
@@ -214,6 +210,6 @@ export const Ranking = () => {
       </div>
     </div>
   );
-};
+});
 
 Ranking.displayName = 'Ranking'; 
