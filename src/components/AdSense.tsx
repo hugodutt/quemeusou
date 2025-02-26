@@ -2,9 +2,13 @@
 
 import { useEffect } from 'react';
 
+type PushableArray = Array<object> & {
+  push(obj: object): number;
+};
+
 declare global {
   interface Window {
-    adsbygoogle: any[];
+    adsbygoogle: PushableArray;
   }
 }
 
