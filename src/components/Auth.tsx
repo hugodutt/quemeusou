@@ -205,13 +205,12 @@ export function Auth() {
         : firebaseError.code === 'auth/wrong-password'
         ? 'Senha incorreta'
         : firebaseError.code === 'auth/user-not-found'
-        : (error as FirebaseError).code === 'auth/user-not-found'
         ? 'Usuário não encontrado'
         : 'Erro ao realizar operação';
       
       // Track error event
       await trackEvent('auth_error', {
-        error_code: (error as FirebaseError).code,
+        error_code: firebaseError.code,
         error_message: errorMessage
       });
       

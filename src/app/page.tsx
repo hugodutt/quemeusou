@@ -17,7 +17,8 @@ const MemoizedHeader = memo(Header);
 
 // Lazy loading do componente de autenticação
 const AuthComponent = dynamic(() => import('@/components/Auth').then(mod => mod.Auth), {
-  loading: () => <div className="animate-pulse bg-gray-800 h-32 rounded-lg" />
+  loading: () => <div className="animate-pulse bg-gray-800 h-32 rounded-lg" />,
+  ssr: false
 });
 
 // Layout base memorizado
