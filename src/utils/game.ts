@@ -1,4 +1,5 @@
 import { User, Achievement } from '@/types/game';
+import { ACHIEVEMENTS } from '@/data/achievements';
 
 export function calculatePoints(attempts: number, hintsRevealed: number): number {
   // Primeira dica é gratuita, então começamos a contar a partir da segunda
@@ -16,25 +17,38 @@ export function calculatePoints(attempts: number, hintsRevealed: number): number
 
 export function checkAchievements(user: User): Achievement[] {
   const newAchievements: Achievement[] = [];
+  const userAchievementIds = user.achievements.map(a => a.id);
 
   // Primeira vitória
-  if (user.correctGuesses === 1 && !user.achievements.includes('first-win')) {
-    newAchievements.push('first-win');
+  if (user.correctGuesses === 1 && !userAchievementIds.includes('first-win')) {
+    newAchievements.push({
+      ...ACHIEVEMENTS.FIRST_WIN,
+      unlockedAt: new Date()
+    });
   }
 
   // Streak de 10 dias
-  if (user.currentStreak >= 10 && !user.achievements.includes('streak-10')) {
-    newAchievements.push('streak-10');
+  if (user.currentStreak >= 10 && !userAchievementIds.includes('streak-10')) {
+    newAchievements.push({
+      ...ACHIEVEMENTS.STREAK_10,
+      unlockedAt: new Date()
+    });
   }
 
   // Streak de 30 dias
-  if (user.currentStreak >= 30 && !user.achievements.includes('streak-30')) {
-    newAchievements.push('streak-30');
+  if (user.currentStreak >= 30 && !userAchievementIds.includes('streak-30')) {
+    newAchievements.push({
+      ...ACHIEVEMENTS.STREAK_30,
+      unlockedAt: new Date()
+    });
   }
 
   // 100 acertos
-  if (user.correctGuesses >= 100 && !user.achievements.includes('correct-100')) {
-    newAchievements.push('correct-100');
+  if (user.correctGuesses >= 100 && !userAchievementIds.includes('correct-100')) {
+    newAchievements.push({
+      ...ACHIEVEMENTS.CORRECT_100,
+      unlockedAt: new Date()
+    });
   }
 
   return newAchievements;
