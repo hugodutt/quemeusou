@@ -57,7 +57,8 @@ export function checkAchievements(user: User): Achievement[] {
 export function getTimeUntilNextGame(): Date {
   const now = new Date();
   const tomorrow = new Date(now);
-  tomorrow.setUTCHours(24, 0, 0, 0);
+  tomorrow.setHours(0, 0, 0, 0);
+  tomorrow.setDate(tomorrow.getDate() + 1);
   return tomorrow;
 }
 
